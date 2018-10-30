@@ -1,0 +1,40 @@
+{ "name": "pre2gfmarkdown-pmb",
+  "version": "0.1.0",
+  "description": "ultramarked + highlight.js + pre tag finder = drop one script tag into your HTML to replace pre tags with their content rendered as Github-flavored markdown.",
+  "keywords": [],
+
+  "author": "M.K. (https://github.com/mk-pmb)",
+  "homepage": "https://github.com/mk-pmb/pre2gfmarkdown-pmb-js/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mk-pmb/pre2gfmarkdown-pmb-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mk-pmb/pre2gfmarkdown-pmb-js/issues"
+  },
+  "contributors": [],
+
+  "private": false, "license": "ISC",
+
+  "main": "dist/pre2gfm.min.js",
+  "scripts": {
+    "test": "nodejs test/all.js",
+    "build": "bash build/rebuild.sh"
+  },
+  "directories": { "test": "test" },
+
+  "dependencies": {
+    "highlight.js": "^9.13.1",
+    "pagedown-sanitizer": "^1.0.0",
+    "ultramarked": "^1.7.0"
+  },
+  "browser": {
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "uglify-js": "^3.4.9"
+  },
+
+
+  "npm vs. BOM = Unexpected token": "-*- coding: UTF-8 -*-"
+}

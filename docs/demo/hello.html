@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pre2gfmarkdown-pmb</title>
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <!-- Unfortunately, highlight.js uses different paths for their
+    style sheets in their npm package… -->
+  <link rel="stylesheet" type="text/css"
+    href="../../../highlight.js/styles/github.css">
+  <!-- … than in their repository: -->
+  <link rel="stylesheet" type="text/css"
+    href="../../../highlight.js/src/styles/github.css">
+  <style>
+    div.markdown pre > code {
+      display: block;
+      border: 1px solid grey;
+      background-color: whitesmoke;
+      padding: 0.5em;
+    }
+
+    body > pre { background-color: lightgrey; text-align: center; }
+  </style>
+</head><body>
+
+<script src="../../dist/pre2gfm.min.js"></script>
+<pre>not markdown</pre>
+
+<pre class="markdown">
+
+Hello
+=====
+
+
+foo
+---
+
+
+* bulleted
+* list
+* items
+
+-----
+
+## bar
+
+1. ordered
+1. list
+1. items
+
+```javascript
+// some JS code
+module.exports = function () {
+  return [1, 2, 'stub'];
+};
+```
+
+</pre>
+
+<pre>also not markdown</pre>
+
+</body></html>
