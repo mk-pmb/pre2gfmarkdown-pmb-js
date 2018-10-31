@@ -2,24 +2,27 @@
 /* -*- tab-width: 2 -*- */
 'use strict';
 
-var umark = require('ultramarked'), umOpts,
+var mdRender = require('marked'), mdOpt,
   sani = false, // too aggressive: require('pagedown-sanitizer'),
   hljs = require('highlight.js');
 
-umOpts = {
+mdOpt = {
   // https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md
   gfm: true,
-  breaks: true,
-  headerPrefix: 'hl-',
+  breaks: false,
+  headerPrefix: 'hl hl-',
+  langPrefix: 'hljs ',
   mangle: false,
   sanitize: !!sani,
 };
 
-if (sani) { umOpts.sanitizer = sani; }
+if (sani) { mdOpt.sanitizer = sani; }
 
-umOpts.highlight = function (code, lang, next) {
+mdOpt.highlight = function (code, lang, next) {
   try {
     var html = hljs.highlight(lang, code, true).value;
+    html = '<!-- begin ' + lang + ' code -->' + html +
+      '<!-- endof ' + lang + ' code -->';
     return (next ? next(null, html) : html);
   } catch (err) {
     if (!next) { throw err; }
@@ -27,12 +30,12 @@ umOpts.highlight = function (code, lang, next) {
   }
 };
 
-umark.setOptions(umOpts);
+mdRender.setOptions(mdOpt);
 
 function transformOneTag(orig) {
   var par = orig.parentNode, mdTag = document.createElement('div');
   mdTag.className = 'markdown';
-  mdTag.innerHTML = umark(orig.innerHTML);
+  mdTag.innerHTML = mdRender(orig.innerHTML);
   par.insertBefore(mdTag, orig);
   par.removeChild(orig);
 }
@@ -51,5 +54,6 @@ function pre2gfm() {
   }
 }
 
+window.pre2gfm = pre2gfm;
 module.exports = pre2gfm;
 setTimeout(pre2gfm, 1);

@@ -7,18 +7,11 @@
   <!-- Unfortunately, highlight.js uses different paths for their
     style sheets in their npm package… -->
   <link rel="stylesheet" type="text/css"
-    href="../../../highlight.js/styles/github.css">
+    href="../../../highlight.js/styles/obsidian.css">
   <!-- … than in their repository: -->
   <link rel="stylesheet" type="text/css"
-    href="../../../highlight.js/src/styles/github.css">
+    href="../../../highlight.js/src/styles/obsidian.css">
   <style>
-    div.markdown pre > code {
-      display: block;
-      border: 1px solid grey;
-      background-color: whitesmoke;
-      padding: 0.5em;
-    }
-
     body > pre { background-color: lightgrey; text-align: center; }
   </style>
 </head><body>
@@ -27,26 +20,44 @@
 <pre>not markdown</pre>
 
 <pre class="markdown">
-
 Hello
 =====
+
+
+A paragraph with a\
+hard line break
+and also some
+merged lines.
 
 
 foo
 ---
 
-
 * bulleted
-* list
-* items
+  * list items
+  * line merge 
+    inside
+    a bullet
+  * hard\
+    line\
+    break
+* bullet
+* bullet
 
 -----
 
 ## bar
 
 1. ordered
-1. list
-1. items
+    1. list items
+    1. multiple lines
+        merged here,
+        too.
+    1. hard\
+      broken\
+      lines
+1. second
+1. third
 
 ```javascript
 // some JS code
@@ -54,7 +65,6 @@ module.exports = function () {
   return [1, 2, 'stub'];
 };
 ```
-
 </pre>
 
 <pre>also not markdown</pre>
