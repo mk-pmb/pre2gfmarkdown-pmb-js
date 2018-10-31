@@ -5,13 +5,14 @@ pre2gfmarkdown-pmb
 <!--/#echo -->
 
 <!--#echo json="package.json" key="description" -->
-ultramarked + highlight.js + pre tag finder = drop one script tag into your
-HTML to replace pre tags with their content rendered as Github-flavored
-markdown.
+marked + highlight.js + pre tag finder = drop one script tag into your HTML to
+replace pre tags with their content rendered as Github-flavored markdown.
 <!--/#echo -->
 
 For syntax highlight in code snippets, you'll still need to import
 [a compatible style sheet][hljs-styles].
+
+* Bundled packages repos: [marked][markedjs] + [highlight.js][hljs-repo]
 
 
 Usage
@@ -34,6 +35,8 @@ Known issues
 
 &nbsp;
 
+  [markedjs]: https://github.com/markedjs/marked/
+  [hljs-repo]: https://github.com/highlightjs/highlight.js/
   [hljs-styles]: https://github.com/highlightjs/highlight.js/tree/master/src/styles
   [ghp-demo]: https://mk-pmb.github.io/pre2gfmarkdown-pmb-js/docs/demo/hello.html
 

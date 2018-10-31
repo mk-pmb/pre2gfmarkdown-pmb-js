@@ -1,6 +1,6 @@
 { "name": "pre2gfmarkdown-pmb",
-  "version": "0.1.1",
-  "description": "ultramarked + highlight.js + pre tag finder = drop one script tag into your HTML to replace pre tags with their content rendered as Github-flavored markdown.",
+  "version": "0.1.2",
+  "description": "marked + highlight.js + pre tag finder = drop one script tag into your HTML to replace pre tags with their content rendered as Github-flavored markdown.",
   "keywords": [],
 
   "author": "M.K. (https://github.com/mk-pmb)",
