@@ -1,5 +1,5 @@
 { "name": "pre2gfmarkdown-pmb",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "marked + highlight.js + pre tag finder = drop one script tag into your HTML to replace pre tags with their content rendered as Github-flavored markdown.",
   "keywords": [],
 
@@ -14,7 +14,7 @@
   },
   "contributors": [],
 
-  "private": false, "license": "ISC",
+  "private": false, "license": "MIT",
 
   "main": "dist/pre2gfm.min.js",
   "scripts": {

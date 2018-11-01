@@ -40,8 +40,14 @@ Known issues
   [hljs-styles]: https://github.com/highlightjs/highlight.js/tree/master/src/styles
   [ghp-demo]: https://mk-pmb.github.io/pre2gfmarkdown-pmb-js/docs/demo/hello.html
 
+
 License
 -------
+
+Bundle(s) in `dist/`: see [`dist/LICENSE.md`](dist/LICENSE.md)
+
+Everything else in this project:
+
 <!--#echo json="package.json" key=".license" -->
-ISC
+MIT
 <!--/#echo -->
