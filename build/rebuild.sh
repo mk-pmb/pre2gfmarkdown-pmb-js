@@ -5,7 +5,7 @@
 function rebuild () {
   export LANG{,UAGE}=en_US.UTF-8  # make error messages search engine-friendly
   local SELFPATH="$(readlink -m "$BASH_SOURCE"/..)"
-  cd "$SELFPATH" || return $?
+  cd -- "$SELFPATH" || return $?
 
   local BFN='pre2gfm'
   browserify --standalone "$BFN" -- "$BFN".js \
@@ -17,8 +17,7 @@ function rebuild () {
   [ "$PIPE_RV" == 0 ] || return "$PIPE_RV"
 
   cd ..
-  du --human-readable -- dist/*.js.gz
-  return 0
+  du --human-readable -- dist/*.js.gz || true
 }
 
 

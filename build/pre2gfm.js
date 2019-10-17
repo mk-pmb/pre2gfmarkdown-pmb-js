@@ -13,17 +13,17 @@ mdOpt = {
   headerPrefix: 'hl hl-',
   langPrefix: 'hljs ',
   mangle: false,
-  sanitize: !!sani,
+  sanitize: Boolean(sani),
 };
 
 if (sani) { mdOpt.sanitizer = sani; }
 
 mdOpt.highlight = function (code, lang, next) {
   try {
-    var html = hljs.highlight(lang, code, true).value;
-    html = '<!-- begin ' + lang + ' code -->' + html +
+    code = hljs.highlight(lang, code, true).value;
+    code = '<!-- begin ' + lang + ' code -->' + code +
       '<!-- endof ' + lang + ' code -->';
-    return (next ? next(null, html) : html);
+    return (next ? next(null, code) : code);
   } catch (err) {
     if (!next) { throw err; }
     return next(err, null);
@@ -50,7 +50,7 @@ function pre2gfm() {
   pres = [].slice.call(pres);
   for (i = 0; i < n; i += 1) {
     o = pres[i];
-    if (hasCls(o, 'markdown')) { transformOneTag(o); }
+    if (hasCls(o, ' markdown ')) { transformOneTag(o); }
   }
 }
 
