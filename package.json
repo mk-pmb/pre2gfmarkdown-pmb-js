@@ -29,10 +29,10 @@
   },
   "devDependencies": {
     "browserify": "^17.0.0",
-    "highlight.js": "^10.7.2",
-    "marked": "^2.0.3",
+    "highlight.js": "^10.7.3",
+    "marked": "^4.0.10",
     "pagedown-sanitizer": "^1.0.0",
-    "uglify-js": "^3.13.7"
+    "uglify-js": "^3.14.5"
   },
 
 
