@@ -8,16 +8,23 @@
     style sheets in their npm package… -->
   <link rel="stylesheet" type="text/css"
     href="../../../highlight.js/styles/agate.css">
+  <link rel="stylesheet" type="text/css"
+    href="../../node_modules/highlight.js/styles/agate.css">
   <!-- … than in their repository: -->
   <link rel="stylesheet" type="text/css"
-    href="../../../highlight.js/src/styles/agate.css">
+    href="../../node_modules/highlight.js/src/styles/agate.css">
   <style>
     body > pre { background-color: lightgrey; text-align: center; }
   </style>
-</head><body>
+</head><body markdown-from-file-cachebust="rand?r=">
 
 <script src="../../dist/pre2gfm.min.js"></script>
+<script>window.pre2gfm.cfg = {
+
+};</script>
 <pre>not markdown</pre>
+
+<a class="markdown-from-file" href="external.md">Loading&hellip; &x1F320;</a>
 
 <pre class="markdown">
 Hello
@@ -35,7 +42,7 @@ foo
 
 * bulleted
   * list items
-  * line merge 
+  * line merge
     inside
     a bullet
   * hard\
@@ -68,5 +75,7 @@ module.exports = function () {
 </pre>
 
 <pre>also not markdown</pre>
+
+<a class="markdown-from-file" codelang="perl" href="perl.pl.txt">Perl Code?</a>
 
 </body></html>
