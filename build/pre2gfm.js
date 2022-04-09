@@ -2,7 +2,7 @@
 /* -*- tab-width: 2 -*- */
 'use strict';
 
-var mdRender = require('marked'), mdOpt,
+var mdRender = require('marked').parse, mdOpt,
   sani = false, // too aggressive: require('pagedown-sanitizer'),
   hljs = require('highlight.js');
 
