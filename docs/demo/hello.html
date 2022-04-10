@@ -19,10 +19,10 @@
 </head><body markdown-from-file-cachebust="rand?r=">
 
 <script src="../../dist/pre2gfm.min.js"></script>
-<script>window.pre2gfm.cfg = {
-
-};</script>
 <pre>not markdown</pre>
+<script type="text/markdown" id="from-id-elem">
+  Hello. I was hiding in your DOM all along.
+</script>
 
 <a class="markdown-from-file" href="external.md">Loading&hellip; &x1F320;</a>
 
@@ -76,6 +76,7 @@ module.exports = function () {
 
 <pre>also not markdown</pre>
 
+<a class="markdown-from-file" href="#from-id-elem">Hidden in DOM?</a>
 <a class="markdown-from-file" codelang="perl" href="perl.pl.txt">Perl Code?</a>
 
 </body></html>

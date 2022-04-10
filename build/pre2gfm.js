@@ -84,9 +84,8 @@ function maybeBustCache(url, bust) {
 
 function fetchOneTagText(link) {
   // Use link text as temporary "loading" hint:
-  var mdTag = transformOneTagText(link), url = link.href,
+  var mdTag = transformOneTagText(link), url = link.getAttribute('href'),
     hll = link.getAttribute('codelang');
-  if (url === document.URL) { return; }
   if (!url) { return; }
 
   function upd(orig) {
@@ -103,9 +102,8 @@ function fetchOneTagText(link) {
       || false).innerHTML || url);
   }
 
-  url = urlNoHash(url);
+  url = urlNoHash(link.href);
   if (url === docUrlNoHash) { return; }
-  if (!url) { return; }
   if (url.slice(0, 6) === 'about:') { return; }
   url = maybeBustCache(url, link.getAttribute('cachebust'));
   console.debug('MDwiki fetch:', [url], '->', mdTag);
