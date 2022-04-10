@@ -2,12 +2,32 @@
 /* -*- tab-width: 2 -*- */
 'use strict';
 
+function pre2gfm() { pre2gfm.scan(); }
+function triggerOnRendered(el) { (pre2gfm.onRendered || Boolean)(el); }
+function urlNoHash(url) { return String(url).split(/#/)[0]; }
+function dotText(x) { return x.text(); }
+
 var mdRender = require('marked').parse, mdOpt, now = Date.nowx,
   bodyCacheBust = document.body.getAttribute('markdown-from-file-cachebust'),
   sani = false, // too aggressive: require('pagedown-sanitizer'),
+  docUrlNoHash = urlNoHash(window.document.URL),
   hljs = require('highlight.js');
 
 if (!now) { now = function now() { return (new Date()).getTime(); }; }
+
+function hasCls(t, c) {
+  return (t && ((' ' + t.className + ' ').indexOf(c) >= 0));
+}
+
+function eachElemCls(t, c, f) {
+  var l = document.getElementsByTagName(t), n = l.length, i, o;
+  if (!n) { return; }
+  l = [].slice.call(l);
+  for (i = 0; i < n; i += 1) {
+    o = l[i];
+    if (hasCls(o, c)) { f(o); }
+  }
+}
 
 mdOpt = {
   // https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md
@@ -38,27 +58,17 @@ mdRender.setOptions(mdOpt);
 function transformOneTagText(orig) {
   var par = orig.parentNode, mdTag = document.createElement('div');
   mdTag.className = orig.className;
+  if (!hasCls(mdTag, ' markdown ')) { mdTag.className += ' markdown'; }
   mdTag.innerHTML = mdRender(orig.innerHTML);
-  par.insertBefore(mdTag, orig);
-  par.removeChild(orig);
+  if (par) {
+    console.debug('insert mdTag', mdTag, 'before', orig);
+    par.insertBefore(mdTag, orig);
+    // Delay removal a bit, to avoid odd mistargetings in Firefox:
+    setTimeout(function rm() { par.removeChild(orig); }, 1);
+  }
+  triggerOnRendered(mdTag);
   return mdTag;
 }
-
-function hasCls(t, c) {
-  return (t && ((' ' + t.className + ' ').indexOf(c) >= 0));
-}
-
-function eachElemCls(t, c, f) {
-  var l = document.getElementsByTagName(t), n = l.length, i, o;
-  if (!n) { return; }
-  l = [].slice.call(l);
-  for (i = 0; i < n; i += 1) {
-    o = l[i];
-    if (hasCls(o, c)) { f(o); }
-  }
-}
-
-function dotText(x) { return x.text(); }
 
 function maybeBustCache(url, bust) {
   var how = (bust || bodyCacheBust);
@@ -74,23 +84,44 @@ function maybeBustCache(url, bust) {
 
 function fetchOneTagText(link) {
   // Use link text as temporary "loading" hint:
-  var mdTag = transformOneTagText(link), url,
+  var mdTag = transformOneTagText(link), url = link.href,
     hll = link.getAttribute('codelang');
-  url = maybeBustCache(link.href, link.getAttribute('cachebust'));
-  if (!hasCls(mdTag, ' markdown ')) { mdTag.className += ' markdown'; }
+  if (url === document.URL) { return; }
+  if (!url) { return; }
+
   function upd(orig) {
+    console.debug('MDwiki fetched:', [url], '=', [orig]);
     var code = orig.replace(/\r|\uFEFF/g, '');
     if (code.slice(-1) !== '\n') { code += '\n'; }
     if (hll) { code = '```' + hll + '\n' + code + '```\n'; }
     mdTag.innerHTML = mdRender(code);
+    triggerOnRendered(mdTag);
   }
-  window.fetch(url).then(dotText).then(String, String).then(upd);
+
+  if (url.slice(0, 1) === '#') {
+    return upd((document.getElementById(url.slice(1))
+      || false).innerHTML || url);
+  }
+
+  url = urlNoHash(url);
+  if (url === docUrlNoHash) { return; }
+  if (!url) { return; }
+  if (url.slice(0, 6) === 'about:') { return; }
+  url = maybeBustCache(url, link.getAttribute('cachebust'));
+  console.debug('MDwiki fetch:', [url], '->', mdTag);
+  function fail(err) { console.error('pre2gfm fetch error:', [url, err]); }
+  window.fetch(url).then(dotText).then(String, String).then(upd).catch(fail);
 }
 
-function pre2gfm() {
+pre2gfm.scan = function scan() {
   eachElemCls('pre', ' markdown ', transformOneTagText);
   eachElemCls('a', ' markdown-from-file ', fetchOneTagText);
-}
+};
+
+pre2gfm.formURL = function mdFromUrl(url, opt) {
+  function ga(k) { return String((opt || false)[k] || ''); }
+  return fetchOneTagText({ href: url, getAttribute: ga });
+};
 
 window.pre2gfm = pre2gfm;
 module.exports = pre2gfm;
