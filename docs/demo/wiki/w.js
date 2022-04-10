@@ -85,9 +85,10 @@
   }());
 
   function hookWikiLink(lnk) {
-    var href = lnk.href;
-    if (!EX.isRooted(href)) { return; }
+    var href = lnk.getAttribute('href');
     if (!/\.md(?:\.txt|)$/.test(href)) { return; }
+    href = lnk.href;
+    if (!EX.isRooted(href)) { return; }
     href = href.slice(rootLen);
     if (rootSub) { href = rootSub.rel(href); }
     if (!lnk.innerHTML) { lnk.innerText = href; }
@@ -96,18 +97,25 @@
   }
 
   window.pre2gfm.onRendered = function adjustLinks(mdTag) {
-    var cbd = contentLink.baseDirUrl, rel,
-      fixRoot = (cbd && (mdTag.parentNode.id === 'mdwiki-content')),
-      links = Array.from(mdTag.querySelectorAll('a[href]'));
-    links.forEach(function adjust(lnk) {
-      var href = lnk.getAttribute('href');
-      if (!href) { return; }
-      if (fixRoot) {
-        rel = EX.resolveUrl('./' + href);
-        if (lnk.href === rel) { lnk.href = cbd + href; }
-      }
-      hookWikiLink(lnk);
-    });
+    var cbd = contentDestElem.baseDirUrl,
+      fixRoot = (cbd && (mdTag.parentNode.id === 'mdwiki-content'));
+
+    function fixUrlAttrs(container, tag, attr) {
+      var sel = tag + '[' + attr + ']',
+        elems = Array.from(container.querySelectorAll(sel));
+      elems.forEach(function adjust(el) {
+        var val = el.getAttribute(attr), url;
+        if (!val) { return; }
+        if (fixRoot) {
+          url = EX.resolveUrl('./' + val);
+          if (el[attr] === url) { el[attr] = cbd + val; }
+        }
+      });
+      return elems;
+    }
+
+    fixUrlAttrs(mdTag, 'a', 'href').forEach(hookWikiLink);
+    fixUrlAttrs(mdTag, 'img', 'src');
   };
 
   (function maybeLoadWantedPage() {
@@ -118,7 +126,8 @@
     if (bad) { return EX.fatalError('Invalid content URL', { why: bad }); }
     contentLink.href = want;
     base = EX.urlBaseDir(contentLink.href);
+    contentLink = null;
     if (base === EX.docBaseDir) { base = ''; }
-    contentLink.baseDirUrl = base;
+    contentDestElem.baseDirUrl = base;
   }());
 }());

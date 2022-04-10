@@ -12,6 +12,6 @@ a { color: dodgerblue; }
 a:hover { color: skyblue; }
 
 .hljs,
-#mdwiki-menu { border-color: hsl(230, 20%, 40%); }
-
-#mdwiki-menu { background-color: hsl(230, 20%, 15%); }
+hr,
+.mdwiki-sidebar, .mdwiki-box { border-color: hsl(230, 20%, 40%); }
+.mdwiki-sidebar, .mdwiki-box { background-color: hsl(230, 20%, 15%); }
