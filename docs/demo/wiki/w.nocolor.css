@@ -7,6 +7,7 @@ body { padding-bottom: 50vh; }
 #mdwiki-content { margin: 1em; }
 
 h1:first-child, h2:first-child, h3:first-child, h4:first-child { margin-top: 0; }
+h1, h2, h3, h4 { margin-bottom: 0.5em; }
 
 a { text-decoration: none; }
 
@@ -38,9 +39,13 @@ hr {
 
 .mdwiki-sidebar ul { list-style-type: none; padding: 0; margin: 0; }
 .mdwiki-sidebar h3,
-.mdwiki-sidebar p,
 .mdwiki-sidebar li { margin: 0; padding: 0; }
-.mdwiki-sidebar h3, .mdwiki-sidebar li { padding: 0 0.25em; }
+.mdwiki-sidebar p { margin-top: 0; margin-bottom: 0.5em; }
+.mdwiki-sidebar li > p { margin-bottom: 0; }
+.mdwiki-sidebar li > p + ul { margin-bottom: 0.5em; }
+.mdwiki-sidebar h3,
+.mdwiki-sidebar p,
+.mdwiki-sidebar li { padding: 0 0.25em; }
 .mdwiki-sidebar h3 { font-size: inherit; margin-top: 1em; }
 .mdwiki-sidebar h3:first-child { margin-top: 0; }
 
