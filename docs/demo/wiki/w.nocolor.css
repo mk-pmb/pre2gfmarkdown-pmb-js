@@ -38,9 +38,10 @@ hr {
 
 .mdwiki-sidebar ul { list-style-type: none; padding: 0; margin: 0; }
 .mdwiki-sidebar h3,
+.mdwiki-sidebar p,
 .mdwiki-sidebar li { margin: 0; padding: 0; }
 .mdwiki-sidebar h3, .mdwiki-sidebar li { padding: 0 0.25em; }
-.mdwiki-sidebar h3 { margin-top: 1em; }
+.mdwiki-sidebar h3 { font-size: inherit; margin-top: 1em; }
 .mdwiki-sidebar h3:first-child { margin-top: 0; }
 
 

@@ -119,8 +119,11 @@
   };
 
   (function maybeLoadWantedPage() {
-    var want, bad, base;
+    var want, bad, base, title;
     want = (location.search || '').slice(1);
+    title = String(want || contentLink.getAttribute('href') || ''
+      ).replace(/^[\.\/]*\//, '');
+    if (title) { document.title = (title + ' — ' + document.title); }
     if (!want) { return; }
     bad = EX.whyNotSafeRelativeLink.rooted(want);
     if (bad) { return EX.fatalError('Invalid content URL', { why: bad }); }
