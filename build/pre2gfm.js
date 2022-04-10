@@ -43,7 +43,10 @@ if (sani) { mdOpt.sanitizer = sani; }
 
 mdOpt.highlight = function (code, lang, next) {
   try {
-    code = hljs.highlight(lang, code, true).value;
+    code = hljs.highlight(code, {
+      language: lang,
+      ignoreIllegals: true,
+    }).value;
     code = '<!-- begin ' + lang + ' code -->' + code +
       '<!-- endof ' + lang + ' code -->';
     return (next ? next(null, code) : code);
