@@ -9,6 +9,7 @@ function rebuild () {
 
   local BFN='pre2gfm'
   browserify --standalone "$BFN" -- "$BFN".js \
+    | tee -- "$BFN".debug.js \
     | uglifyjs \
     | tee -- ../dist/"$BFN".min.js \
     | gzip --stdout >../dist/"$BFN".min.js.gz
