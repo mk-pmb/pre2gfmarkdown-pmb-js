@@ -5,6 +5,8 @@
   function byid(id) { return (document.getElementById(id) || false); }
 
   var EX = {}, rootLen, rootSub,
+    docHtmlElem = document.body.parentElement,
+    // ^-- HTML often has no document.rootElement
     contentLink = byid('mdwiki-content-link'), contentDestElem;
 
   if (!contentLink) { return; }
@@ -124,10 +126,15 @@
     title = String(want || contentLink.getAttribute('href') || ''
       ).replace(/^[\.\/]*\//, '');
     if (title) { document.title = (title + ' — ' + document.title); }
-    if (!want) { return; }
+    docHtmlElem.setAttribute('doctitle', title);
+    if (!want) {
+      docHtmlElem.setAttribute('docsrc', '');
+      return;
+    }
     bad = EX.whyNotSafeRelativeLink.rooted(want);
     if (bad) { return EX.fatalError('Invalid content URL', { why: bad }); }
     contentLink.href = want;
+    docHtmlElem.setAttribute('docsrc', want);
     base = EX.urlBaseDir(contentLink.href);
     contentLink = null;
     if (base === EX.docBaseDir) { base = ''; }
