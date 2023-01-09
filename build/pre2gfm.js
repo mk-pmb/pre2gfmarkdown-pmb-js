@@ -15,6 +15,7 @@ var mdRender = require('marked').parse, mdOpt, now = Date.nowx,
 
 if (!now) { now = function now() { return (new Date()).getTime(); }; }
 
+function orf(x) { return x || false; }
 function inStr(needle, hay) { return (hay.indexOf(needle) >= 0); }
 function hasCls(t, c) { return (t && inStr(c, ' ' + t.className + ' ')); }
 
@@ -101,8 +102,7 @@ function fetchOneTagText(link) {
   }
 
   if (url.slice(0, 1) === '#') {
-    return upd((document.getElementById(url.slice(1))
-      || false).innerHTML || url);
+    return upd(orf(document.getElementById(url.slice(1))).innerHTML || url);
   }
 
   url = urlNoHash(link.href);
@@ -120,7 +120,7 @@ pre2gfm.scan = function scan() {
 };
 
 pre2gfm.formURL = function mdFromUrl(url, opt) {
-  function ga(k) { return String((opt || false)[k] || ''); }
+  function ga(k) { return String(orf(opt)[k] || ''); }
   return fetchOneTagText({ href: url, getAttribute: ga });
 };
 
