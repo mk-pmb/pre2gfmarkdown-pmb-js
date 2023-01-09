@@ -33,7 +33,7 @@ mdOpt = {
   // https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md
   gfm: true,
   breaks: false,
-  headerPrefix: 'hl hl-',
+  headerPrefix: 'hl-',  // ATTN: This is used for id=…, not class=…!
   langPrefix: 'hljs ',
   mangle: false,
   sanitize: Boolean(sani),
