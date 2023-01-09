@@ -40,6 +40,10 @@ mdOpt = {
   sanitize: Boolean(sani),
 };
 
+
+mdOpt.httpGet = (orf(window.axios).get // <-- see `../docs/httpGet.md`
+  || window.fetch.bind(window));
+
 if (sani) { mdOpt.sanitizer = sani; }
 
 mdOpt.highlight = function (code, lang, next) {
@@ -111,7 +115,7 @@ function fetchOneTagText(link) {
   url = maybeBustCache(url, link.getAttribute('cachebust'));
   console.debug('MDwiki fetch:', [url], '->', mdTag);
   function fail(err) { console.error('pre2gfm fetch error:', [url, err]); }
-  window.fetch(url).then(dotText).then(String, String).then(upd).catch(fail);
+  mdOpt.httpGet(url).then(dotText).then(String, String).then(upd).catch(fail);
 }
 
 pre2gfm.scan = function scan() {
