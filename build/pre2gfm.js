@@ -15,9 +15,9 @@ var mdRender = require('marked').parse, mdOpt, now = Date.nowx,
 
 if (!now) { now = function now() { return (new Date()).getTime(); }; }
 
-function hasCls(t, c) {
-  return (t && ((' ' + t.className + ' ').indexOf(c) >= 0));
-}
+function inStr(needle, hay) { return (hay.indexOf(needle) >= 0); }
+function hasCls(t, c) { return (t && inStr(c, ' ' + t.className + ' ')); }
+
 
 function eachElemCls(t, c, f) {
   var l = document.getElementsByTagName(t), n = l.length, i, o;
