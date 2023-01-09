@@ -3,7 +3,6 @@
 'use strict';
 
 function pre2gfm() { pre2gfm.scan(); }
-function triggerOnRendered(el) { (pre2gfm.onRendered || Boolean)(el); }
 function urlNoHash(url) { return String(url).split(/#/)[0]; }
 function dotText(x) { return x.text(); }
 
@@ -62,6 +61,18 @@ mdOpt.highlight = function (code, lang, next) {
 };
 
 mdRender.setOptions(mdOpt);
+
+
+function rescrollToHeadline() {
+  var lh = location.hash, hp = '#' + mdOpt.headerPrefix;
+  console.debug('rescrollToHeadline:', { lh: lh, hp: hp });
+  if (lh.slice(0, hp.length) === hp) { location.hash = lh; }
+}
+
+function triggerOnRendered(el) {
+  rescrollToHeadline();
+  (pre2gfm.onRendered || Boolean)(el);
+}
 
 function transformOneTagText(orig) {
   var par = orig.parentNode, mdTag = document.createElement('div');
