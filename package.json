@@ -18,14 +18,12 @@
 
   "main": "dist/pre2gfm.min.js",
   "scripts": {
-    "test": "bash build/rebuild.sh",
-    "build": "bash build/rebuild.sh"
+    "build": "bash build/rebuild.sh",
+    "test": "bash build/rebuild.sh"
   },
   "directories": { "test": "test" },
 
   "dependencies": {
-  },
-  "browser": {
   },
   "devDependencies": {
     "browserify": "^17.0.0",
