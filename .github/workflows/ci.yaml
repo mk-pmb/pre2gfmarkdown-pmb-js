@@ -10,7 +10,7 @@ on:
       - '*'
 
 jobs:
-  job_npm_test:
+  job_ci:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,13 +23,13 @@ jobs:
           - '16.x'
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: mk-pmb/github-ci-util-2405-pmb/act/install@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install .
-      - run: npm test
+          nodejs_version: ${{ matrix.node-version }}
+
+      - run: ghciu npm install .
+      - run: ghciu npm test
 
 
 ...
