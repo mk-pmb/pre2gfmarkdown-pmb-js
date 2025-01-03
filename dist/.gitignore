@@ -1,6 +1,11 @@
 
-# Auto-generated files not meant to be published
+# Auto-generated files meant to be published only on the gh-pages branch:
 /*.js.gz
+/*.min.js
+
+
+
+# Auto-generated files not meant to be published ever:
 /*.js.tmp-browserify-*
 
 
