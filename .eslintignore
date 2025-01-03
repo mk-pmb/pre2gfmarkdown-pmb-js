@@ -1,0 +1,3 @@
+
+/build/*.debug.js
+/dist/*.min.js
