@@ -1,0 +1,17 @@
+﻿@charset "UTF-8";
+/* -*- coding: UTF-8, tab-width: 2 -*- */
+
+@import url("w.nocolor.css");
+
+body {
+  background-color: hsl(230, 20%, 20%);
+  color: darkgray;
+}
+h1, h2, h3, h4 { color: lightgrey; }
+a { color: dodgerblue; }
+a:hover { color: skyblue; }
+
+.hljs,
+hr,
+.mdwiki-sidebar, .mdwiki-box { border-color: hsl(230, 20%, 40%); }
+.mdwiki-sidebar, .mdwiki-box { background-color: hsl(230, 20%, 15%); }

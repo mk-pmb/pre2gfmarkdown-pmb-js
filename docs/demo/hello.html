@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>pre2gfmarkdown-pmb</title>
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <!-- Unfortunately, highlight.js uses different paths for their
+    style sheets in their npm package… -->
+  <link rel="stylesheet" type="text/css"
+    href="../../../highlight.js/styles/agate.css">
+  <link rel="stylesheet" type="text/css"
+    href="../../node_modules/highlight.js/styles/agate.css">
+  <!-- … than in their repository: -->
+  <link rel="stylesheet" type="text/css"
+    href="../../node_modules/highlight.js/src/styles/agate.css">
+  <style>
+    body > pre { background-color: lightgrey; text-align: center; }
+  </style>
+</head><body markdown-from-file-cachebust="rand?r=">
+
+<script src="../../dist/pre2gfm.min.js"></script>
+<pre>not markdown</pre>
+<script type="text/markdown" id="from-id-elem">
+  Hello. I was hiding in your DOM all along.
+</script>
+
+<a class="markdown-from-file" href="external.md">Loading&hellip; &x1F320;</a>
+
+<pre class="markdown">
+Hello
+=====
+
+
+A paragraph with a\
+hard line break
+and also some
+merged lines.
+
+
+foo
+---
+
+* bulleted
+  * list items
+  * line merge
+    inside
+    a bullet
+  * hard\
+    line\
+    break
+* bullet
+* bullet
+
+-----
+
+## bar
+
+1. ordered
+    1. list items
+    1. multiple lines
+        merged here,
+        too.
+    1. hard\
+      broken\
+      lines
+1. second
+1. third
+
+```javascript
+// some JS code
+module.exports = function () {
+  return [1, 2, 'stub'];
+};
+```
+</pre>
+
+<pre>also not markdown</pre>
+
+<a class="markdown-from-file" href="#from-id-elem">Hidden in DOM?</a>
+<a class="markdown-from-file" codelang="perl" href="perl.pl.txt">Perl Code?</a>
+
+</body></html>

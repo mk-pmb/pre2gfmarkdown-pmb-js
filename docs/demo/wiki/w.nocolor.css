@@ -1,0 +1,66 @@
+﻿@charset "UTF-8";
+/* -*- coding: UTF-8, tab-width: 2 -*- */
+
+html, body { position: absolute; top: 0; left: 0; right: 0;
+  margin: 0; padding: 0; }
+body { padding-bottom: 50vh; }
+#mdwiki-content { margin: 1em; }
+
+h1:first-child, h2:first-child, h3:first-child, h4:first-child { margin-top: 0; }
+h1, h2, h3, h4 { margin-bottom: 0.5em; }
+
+a { text-decoration: none; }
+
+a.markdown-from-file.hourglass:before {
+  display: inline-block; content: "\23F3 ";
+  font-size: 200%; text-align: center; margin-right: 0.5ex;
+  transform-origin: center center 0;
+  animation: rotateClockwise 10s infinite linear;
+}
+
+@keyframes rotateClockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hljs,
+.mdwiki-sidebar, .mdwiki-sidebar-bd { border-width: 2px; border-style: solid; }
+
+hr {
+  border-width: 0; border-top-width: 1px; height: 0;
+  border-style: solid; opacity: 0.75;
+}
+
+.mdwiki-sidebar { padding: 0.75em; margin: 2em; }
+.mdwiki-sidebar.topmost { margin-top: 0; border-top: 0; }
+.mdwiki-sidebar.left { float: left; margin-left: 0; border-left: 0; }
+.mdwiki-sidebar.right { float: right; margin-right: 0; border-right: 0; }
+
+
+.mdwiki-sidebar ul { list-style-type: none; padding: 0; margin: 0; }
+.mdwiki-sidebar h3,
+.mdwiki-sidebar li { margin: 0; padding: 0; }
+.mdwiki-sidebar p { margin-top: 0; margin-bottom: 0.5em; }
+.mdwiki-sidebar li > p { margin-bottom: 0; }
+.mdwiki-sidebar li > p + ul { margin-bottom: 0.5em; }
+.mdwiki-sidebar h3,
+.mdwiki-sidebar p,
+.mdwiki-sidebar li { padding: 0 0.25em; }
+.mdwiki-sidebar h3 { font-size: inherit; margin-top: 1em; }
+.mdwiki-sidebar h3:first-child { margin-top: 0; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* scroll */
