@@ -15,3 +15,15 @@ Does the color scheme work?
 from __future__ import division
 test = { 'home': True, 'zero': 0 }
 ```
+
+
+Panels
+------
+
+```mdwiki-fx
+fx:simple-panels { "tag": "aside", "cls": "mdwiki-sidebar" }
+bar.md
+foo.md
+```
+
+
