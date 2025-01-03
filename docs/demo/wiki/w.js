@@ -12,6 +12,12 @@
   if (!contentLink) { return; }
   contentDestElem = (contentLink.parentNode || document.body);
 
+  EX.qsMap = function qsMap(container, sel, func) {
+    var l = Array.from((container || document).querySelectorAll(sel));
+    if (func) { l = l.map(func); }
+    return l;
+  };
+
   EX.fatalError = function fatalError(msg, ds) {
     var el = contentDestElem;
     el.innerHTML = '<p class="mdwiki-error"></p>';
@@ -103,8 +109,7 @@
       fixRoot = (cbd && (mdTag.parentNode.id === 'mdwiki-content'));
 
     function fixUrlAttrs(container, tag, attr) {
-      var sel = tag + '[' + attr + ']',
-        elems = Array.from(container.querySelectorAll(sel));
+      var elems = EX.qsMap(container, tag + '[' + attr + ']');
       elems.forEach(function adjust(el) {
         var val = el.getAttribute(attr), url;
         if (!val) { return; }
