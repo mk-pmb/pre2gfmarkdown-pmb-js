@@ -98,7 +98,7 @@
     return true;
   }
 
-  window.pre2gfm.onRendered = function adjustLinks(mdTag) {
+  window.pre2gfm.onRendered.push(function adjustLinks(mdTag) {
     var cbd = contentDestElem.baseDirUrl,
       fixRoot = (cbd && (mdTag.parentNode.id === 'mdwiki-content'));
 
@@ -118,7 +118,7 @@
 
     fixUrlAttrs(mdTag, 'a', 'href').forEach(hookWikiLink);
     fixUrlAttrs(mdTag, 'img', 'src');
-  };
+  });
 
   (function maybeLoadWantedPage() {
     var want, bad, base, title;

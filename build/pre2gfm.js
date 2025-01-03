@@ -69,10 +69,23 @@ function rescrollToHeadline() {
   if (lh.slice(0, hp.length) === hp) { location.hash = lh; }
 }
 
-function triggerOnRendered(el) {
-  rescrollToHeadline();
-  (pre2gfm.onRendered || Boolean)(el);
+function runEventHandlerChain(hndList, args) {
+  var f = ((hndList.length >= 2) && runEventHandlerChain.bind(null,
+    hndList.slice(1), args));
+  if (f) { setTimeout(f, 10); }
+  f = hndList[0];
+  if (f) { f.apply(null, args); }
 }
+pre2gfm.runEventHandlerChain = runEventHandlerChain;
+
+pre2gfm.onRendered = [];
+
+function triggerOnRendered(el) {
+  runEventHandlerChain([
+    rescrollToHeadline,
+  ].concat(pre2gfm.onRendered), [el]);
+}
+
 
 function transformOneTagText(orig) {
   var par = orig.parentNode, mdTag = document.createElement('div');
