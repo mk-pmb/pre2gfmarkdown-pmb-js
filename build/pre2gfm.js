@@ -79,7 +79,7 @@ mdRender.setOptions(mdOpt);
 
 function rescrollToHeadline() {
   var lh = location.hash, hp = '#' + mdOpt.headerPrefix;
-  console.debug('rescrollToHeadline:', { lh: lh, hp: hp });
+  // console.debug('rescrollToHeadline:', { lh: lh, hp: hp });
   if (lh.slice(0, hp.length) === hp) { location.hash = lh; }
 }
 
@@ -107,7 +107,7 @@ function transformOneTagText(orig) {
   if (!hasCls(mdTag, ' markdown ')) { mdTag.className += ' markdown'; }
   mdTag.innerHTML = mdRender(orig.innerHTML);
   if (par) {
-    console.debug('insert mdTag', mdTag, 'before', orig);
+    // console.debug('insert mdTag', mdTag, 'before', orig);
     par.insertBefore(mdTag, orig);
     // Delay removal a bit, to avoid odd mistargetings in Firefox:
     setTimeout(function rm() { par.removeChild(orig); }, 1);
@@ -135,7 +135,7 @@ function fetchOneTagText(link) {
   if (!url) { return; }
 
   function upd(orig) {
-    console.debug('MDwiki fetched:', [url], '=', [orig]);
+    // console.debug('MDwiki fetched:', [url], '=', [orig]);
     var code = orig.replace(/\r|\uFEFF/g, '');
     if (code.slice(-1) !== '\n') { code += '\n'; }
     if (hll) { code = '```' + hll + '\n' + code + '```\n'; }
@@ -151,7 +151,7 @@ function fetchOneTagText(link) {
   if (url === docUrlNoHash) { return; }
   if (url.slice(0, 6) === 'about:') { return; }
   url = maybeBustCache(url, link.getAttribute('cachebust'));
-  console.debug('MDwiki fetch:', [url], '->', mdTag);
+  // console.debug('MDwiki fetch:', [url], '->', mdTag);
   function fail(err) { console.error('pre2gfm fetch error:', [url, err]); }
   mdOpt.httpGet(url).then(dotText).then(String, String).then(upd).catch(fail);
 }
