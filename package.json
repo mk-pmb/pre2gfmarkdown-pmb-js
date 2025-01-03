@@ -31,6 +31,7 @@
     "eslint-config-nodejs-pmb": "^0.3.6",
     "eslint-plugin-json-light-pmb": "^1.0.7",
     "eslint-plugin-n": "^17.10.2",
+    "getown": "^1.0.1",
     "highlight.js": "^11.11.1",
     "marked": "^4.0.13",
     "pagedown-sanitizer": "^1.0.0",

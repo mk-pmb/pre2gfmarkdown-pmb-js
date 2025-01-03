@@ -10,6 +10,7 @@ var mdRender = require('marked').parse, mdOpt, now = Date.nowx,
   bodyCacheBust = document.body.getAttribute('markdown-from-file-cachebust'),
   sani = false, // too aggressive: require('pagedown-sanitizer'),
   docUrlNoHash = urlNoHash(window.document.URL),
+  getOwn = require('getown'),
   hljs = require('highlight.js');
 
 if (!now) { now = function now() { return (new Date()).getTime(); }; }
@@ -45,19 +46,32 @@ mdOpt.httpGet = (orf(window.axios).get // <-- see `../docs/httpGet.md`
 
 if (sani) { mdOpt.sanitizer = sani; }
 
+
+pre2gfm.hljsProxy = function hljsProxy(code, lang) {
+  return hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
+};
+
+
+pre2gfm.syntaxHighlighters = {
+  '*': pre2gfm.hljsProxy,
+};
+
+
 mdOpt.highlight = function (code, lang, next) {
+  var impl = pre2gfm.syntaxHighlighters, err;
+  impl = getOwn(impl, lang) || getOwn(impl, '*');
   try {
-    code = hljs.highlight(code, {
-      language: lang,
-      ignoreIllegals: true,
-    }).value;
-    code = '<!-- begin ' + lang + ' code -->' + code +
-      '<!-- endof ' + lang + ' code -->';
-    return (next ? next(null, code) : code);
-  } catch (err) {
-    if (!next) { throw err; }
-    return next(err, null);
+    code = impl(code, lang); /*
+      Passing the code as arg 1 has the benefit of supporting any generic
+      one-argument string function, like String. */
+  } catch (caught) {
+    err = caught;
   }
+  if (err) {
+    console.warn('pre2gfm: Failed to highlight code:',
+      { code: code, lang: lang, error: err });
+  }
+  return (next ? next(null, code) : code);
 };
 
 mdRender.setOptions(mdOpt);
