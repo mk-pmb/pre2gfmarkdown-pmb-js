@@ -132,6 +132,7 @@ function fetchOneTagText(link) {
   // Use link text as temporary "loading" hint:
   var mdTag = transformOneTagText(link), url = link.getAttribute('href'),
     hll = link.getAttribute('codelang');
+  mdTag.classList.add('markdown');
   if (!url) { return; }
 
   function upd(orig) {
