@@ -141,6 +141,7 @@ function fetchOneTagText(link) {
     if (code.slice(-1) !== '\n') { code += '\n'; }
     if (hll) { code = '```' + hll + '\n' + code + '```\n'; }
     mdTag.innerHTML = mdRender(code);
+    mdTag.classList.remove('hourglass');
     triggerOnRendered(mdTag);
   }
 
