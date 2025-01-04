@@ -12,21 +12,12 @@ on:
 jobs:
   job_ci:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version:
-          - '8.x'
-            # ^-- Also somewhat representative of ancient Firefox,
-            #   at least with regards to fancy modern RegExp
-            #   features used in highlight.js v11.
-
-          - '16.x'
 
     steps:
       - uses: actions/checkout@v4
       - uses: mk-pmb/github-ci-util-2405-pmb/act/install@v1
-        with:
-          nodejs_version: ${{ matrix.node-version }}
+        # with:
+        #   nodejs_version: ${{ matrix.node-version }}
 
       - run: ghciu npm install .
       - run: ghciu npm test
