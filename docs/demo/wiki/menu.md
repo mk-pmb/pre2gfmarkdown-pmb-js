@@ -1,5 +1,5 @@
 ﻿
-### MDWiki
+### MDwiki
 * [Home](home.md)
 * [Night Style](night.css)
 * [foo](foo.md)
