@@ -4,8 +4,13 @@
 
 function rebuild () {
   export LANG{,UAGE}=en_US.UTF-8  # make error messages search engine-friendly
-  local SELFPATH="$(readlink -m "$BASH_SOURCE"/..)"
-  cd -- "$SELFPATH" || return $?
+  local REPO_DIR="$(readlink -m "$BASH_SOURCE"/../..)"
+  exec </dev/null
+  cd -- "$REPO_DIR" || return $?
+
+  eslint . || return $?
+
+  cd build || return $?
 
   local BFN='pre2gfm'
   browserify --standalone "$BFN" -- "$BFN".js \
@@ -17,7 +22,7 @@ function rebuild () {
   let PIPE_RV="${PIPE_RV// /+}"
   [ "$PIPE_RV" == 0 ] || return "$PIPE_RV"
 
-  cd ..
+  cd -- "$REPO_DIR" || return $?
   du --human-readable -- dist/*.js.gz || true
 }
 
