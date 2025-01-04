@@ -1,19 +1,22 @@
-﻿/*jslint indent: 2, maxlen: 80, node: true, browser: true */
-/* -*- tab-width: 2 -*- */
-'use strict';
+﻿'use strict';
+/* global window, document */
 
+const mdRender = require('marked').parse;
+const getOwn = require('getown');
+const hljs = require('highlight.js');
+
+function dotText(x) { return x.text(); }
 function pre2gfm() { pre2gfm.scan(); }
 function urlNoHash(url) { return String(url).split(/#/)[0]; }
-function dotText(x) { return x.text(); }
 
-var mdRender = require('marked').parse, mdOpt, now = Date.nowx,
-  bodyCacheBust = document.body.getAttribute('markdown-from-file-cachebust'),
-  sani = false, // too aggressive: require('pagedown-sanitizer'),
-  docUrlNoHash = urlNoHash(window.document.URL),
-  getOwn = require('getown'),
-  hljs = require('highlight.js');
+const sani = false; // too aggressive: require('pagedown-sanitizer'),
 
-if (!now) { now = function now() { return (new Date()).getTime(); }; }
+const bodyCacheBust = document.body.getAttribute(
+  'markdown-from-file-cachebust');
+const docUrlNoHash = urlNoHash(window.document.URL);
+
+let { now } = Date;
+if (!now) { now = function getTime() { return (new Date()).getTime(); }; }
 
 function orf(x) { return x || false; }
 function inStr(needle, hay) { return (hay.indexOf(needle) >= 0); }
@@ -21,16 +24,19 @@ function hasCls(t, c) { return (t && inStr(c, ' ' + t.className + ' ')); }
 
 
 function eachElemCls(t, c, f) {
-  var l = document.getElementsByTagName(t), n = l.length, i, o;
+  let l = document.getElementsByTagName(t);
+  const n = l.length;
   if (!n) { return; }
   l = [].slice.call(l);
+  let i;
+  let o;
   for (i = 0; i < n; i += 1) {
     o = l[i];
     if (hasCls(o, c)) { f(o); }
   }
 }
 
-mdOpt = {
+const mdOpt = {
   // https://github.com/markedjs/marked/blob/master/docs/USING_ADVANCED.md
   gfm: true,
   breaks: false,
@@ -57,11 +63,13 @@ pre2gfm.syntaxHighlighters = {
 };
 
 
-mdOpt.highlight = function (code, lang, next) {
-  var impl = pre2gfm.syntaxHighlighters, err;
+mdOpt.highlight = function highlight(origCode, lang, next) {
+  let impl = pre2gfm.syntaxHighlighters;
   impl = getOwn(impl, lang) || getOwn(impl, '*');
+  let err;
+  let code = '';
   try {
-    code = impl(code, lang); /*
+    code = impl(origCode, lang); /*
       Passing the code as arg 1 has the benefit of supporting any generic
       one-argument string function, like String. */
   } catch (caught) {
@@ -69,7 +77,7 @@ mdOpt.highlight = function (code, lang, next) {
   }
   if (err) {
     console.warn('pre2gfm: Failed to highlight code:',
-      { code: code, lang: lang, error: err });
+      { code, lang, error: err });
   }
   return (next ? next(null, code) : code);
 };
@@ -78,17 +86,16 @@ mdRender.setOptions(mdOpt);
 
 
 function rescrollToHeadline() {
-  var lh = location.hash, hp = '#' + mdOpt.headerPrefix;
+  const lh = window.location.hash;
+  const hp = '#' + mdOpt.headerPrefix;
   // console.debug('rescrollToHeadline:', { lh: lh, hp: hp });
-  if (lh.slice(0, hp.length) === hp) { location.hash = lh; }
+  if (lh.startsWith(hp)) { window.location.hash = lh; }
 }
 
 function runEventHandlerChain(hndList, args) {
-  var f = ((hndList.length >= 2) && runEventHandlerChain.bind(null,
-    hndList.slice(1), args));
-  if (f) { setTimeout(f, 10); }
-  f = hndList[0];
-  if (f) { f.apply(null, args); }
+  const [f, ...g] = hndList;
+  if (g.length) { setTimeout(runEventHandlerChain.bind(null, g, args), 10); }
+  if (f) { f(...args); }
 }
 pre2gfm.runEventHandlerChain = runEventHandlerChain;
 
@@ -102,9 +109,10 @@ function triggerOnRendered(el) {
 
 
 function transformOneTagText(orig) {
-  var par = orig.parentNode, mdTag = document.createElement('div');
+  const par = orig.parentNode;
+  const mdTag = document.createElement('div');
   mdTag.className = orig.className;
-  if (!hasCls(mdTag, ' markdown ')) { mdTag.className += ' markdown'; }
+  mdTag.classList.add('markdown');
   mdTag.innerHTML = mdRender(orig.innerHTML);
   if (par) {
     // console.debug('insert mdTag', mdTag, 'before', orig);
@@ -116,28 +124,34 @@ function transformOneTagText(orig) {
   return mdTag;
 }
 
-function maybeBustCache(url, bust) {
-  var how = (bust || bodyCacheBust);
-  if (!how) { return url; }
-  how = String(how || '').split(/^([a-z]+) ?/);
-  if (!how) { return url; }
-  url += how[2];
-  how = how[1];
-  if (how === 'rand') { url += Math.random().toString(26).slice(2); }
-  if (how === 'uts') { url += Math.floor(now() / 1e3); }
+
+const cacheBusterValueGenerators = {
+  rand() { return Math.random().toString(26).slice(2); },
+  uts() { return Math.floor(now() / 1e3); },
+};
+
+function maybeBustCache(origUrl, bust) {
+  const how = (bust || bodyCacheBust);
+  if (!how) { return origUrl; }
+  const [, genName, suf] = String(how || '').split(/^([a-z]+) ?/);
+  const genImpl = getOwn(cacheBusterValueGenerators, genName || '');
+  if (!genImpl) {
+    console.warn('pre2gfm: Unknown cache buster value generator:', genName);
+    return origUrl;
+  }
+  const url = origUrl + suf + genImpl();
   return url;
 }
 
 function fetchOneTagText(link) {
-  // Use link text as temporary "loading" hint:
-  var mdTag = transformOneTagText(link), url = link.getAttribute('href'),
-    hll = link.getAttribute('codelang');
-  mdTag.classList.add('markdown');
+  let url = link.getAttribute('href');
   if (!url) { return; }
+  const mdTag = transformOneTagText(link);
+  const hll = link.getAttribute('codelang');
 
   function upd(orig) {
     // console.debug('MDwiki fetched:', [url], '=', [orig]);
-    var code = orig.replace(/\r|\uFEFF/g, '');
+    let code = orig.replace(/\r|\uFEFF/g, '');
     if (code.slice(-1) !== '\n') { code += '\n'; }
     if (hll) { code = '```' + hll + '\n' + code + '```\n'; }
     mdTag.innerHTML = mdRender(code);
@@ -145,17 +159,18 @@ function fetchOneTagText(link) {
     triggerOnRendered(mdTag);
   }
 
-  if (url.slice(0, 1) === '#') {
+  if (url.startsWith('#')) {
     return upd(orf(document.getElementById(url.slice(1))).innerHTML || url);
   }
 
   url = urlNoHash(link.href);
   if (url === docUrlNoHash) { return; }
-  if (url.slice(0, 6) === 'about:') { return; }
+  if (url.startsWith('about:')) { return; }
   url = maybeBustCache(url, link.getAttribute('cachebust'));
   // console.debug('MDwiki fetch:', [url], '->', mdTag);
   function fail(err) { console.error('pre2gfm fetch error:', [url, err]); }
-  mdOpt.httpGet(url).then(dotText).then(String, String).then(upd).catch(fail);
+  mdOpt.httpGet(url).then(dotText).then(String, String).then(upd)
+    .catch(fail);
 }
 
 pre2gfm.scan = function scan() {

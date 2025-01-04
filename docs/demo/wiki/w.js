@@ -1,25 +1,26 @@
-﻿/*jslint indent: 2, maxlen: 80, continue: false, unparam: false, browser: true */
-/* -*- tab-width: 2 -*- */
-(function () {
-  'use strict';
+﻿'use strict';
+/* global window, document */
+(function install() {
+
   function byid(id) { return (document.getElementById(id) || false); }
 
-  var EX = {}, rootLen, rootSub,
-    docHtmlElem = document.body.parentElement,
-    // ^-- HTML often has no document.rootElement
-    contentLink = byid('mdwiki-content-link'), contentDestElem;
-
+  const EX = {};
+  let rootLen;
+  let rootSub;
+  const docHtmlElem = document.body.parentElement;
+  // ^-- HTML often has no document.rootElement
+  let contentLink = byid('mdwiki-content-link');
   if (!contentLink) { return; }
-  contentDestElem = (contentLink.parentNode || document.body);
+  const contentDestElem = (contentLink.parentNode || document.body);
 
   EX.qsMap = function qsMap(container, sel, func) {
-    var l = Array.from((container || document).querySelectorAll(sel));
+    let l = Array.from((container || document).querySelectorAll(sel));
     if (func) { l = l.map(func); }
     return l;
   };
 
   EX.fatalError = function fatalError(msg, ds) {
-    var el = contentDestElem;
+    let el = contentDestElem;
     el.innerHTML = '<p class="mdwiki-error"></p>';
     el = el.firstChild;
     el.innerText = 'Error: ' + msg;
@@ -47,7 +48,10 @@
     if (!rootSub) { return; }
     rootSub = rootSub.replace(/\/$/, '').split(/\//);
     rootSub.rel = function rel(url) {
-      var relUrl = url, up = rootSub.length, common, dir;
+      let relUrl = url;
+      const up = rootSub.length;
+      let common;
+      let dir;
       for (common = 0; common < up; common += 1) {
         dir = rootSub[common] + '/';
         if (!relUrl.startsWith(dir)) { break; }
@@ -60,14 +64,15 @@
   }());
 
   (function ns() {
-    var lnk = document.createElement('a'), ab = 'about:blank';
+    const lnk = document.createElement('a');
+    const ab = 'about:blank';
     lnk.id = 'mdwiki-href-resolver';
     lnk.style.display = 'none !important';
     lnk.href = ab;
     contentDestElem.appendChild(lnk);
     function reso(href) {
       lnk.href = href;
-      var abs = lnk.href;
+      const abs = lnk.href;
       lnk.href = ab;
       return abs;
     }
@@ -76,16 +81,16 @@
   }());
 
   (function ns() {
-    var wn = function whyNotSafeRelativeLink(href) {
+    const wn = function whyNotSafeRelativeLink(href) {
       if (!href) { return 'empty'; }
       if (href.startsWith('/')) { return 'absolute'; }
       if (href !== encodeURI(href)) { return 'scary:char'; }
       if (/[\/:]\//.test(href)) { return 'scary:slash'; }
     };
     wn.rooted = function andRooted(href) {
-      var bad = wn(href), url;
+      const bad = wn(href);
       if (bad) { return bad; }
-      url = EX.resolveUrl(href);
+      const url = EX.resolveUrl(href);
       if (url !== EX.resolveUrl('./' + href)) { return 'exotic:nonrel'; }
       if (!EX.isRooted(url)) { return 'root:outside'; }
     };
@@ -93,28 +98,31 @@
   }());
 
   function hookWikiLink(lnk) {
-    var href = lnk.getAttribute('href');
+    let href = lnk.getAttribute('href');
     if (!/\.md(?:\.txt|)$/.test(href)) { return; }
     href = lnk.href;
     if (!EX.isRooted(href)) { return; }
     href = href.slice(rootLen);
     if (rootSub) { href = rootSub.rel(href); }
+    // eslint-disable-next-line no-param-reassign
     if (!lnk.innerHTML) { lnk.innerText = href; }
+    // eslint-disable-next-line no-param-reassign
     lnk.href = '?' + href;
     return true;
   }
 
   window.pre2gfm.onRendered.push(function adjustLinks(mdTag) {
-    var cbd = contentDestElem.baseDirUrl,
-      fixRoot = (cbd && (mdTag.parentNode.id === 'mdwiki-content'));
+    const cbd = contentDestElem.baseDirUrl;
+    const fixRoot = (cbd && (mdTag.parentNode.id === 'mdwiki-content'));
 
     function fixUrlAttrs(container, tag, attr) {
-      var elems = EX.qsMap(container, tag + '[' + attr + ']');
+      const elems = EX.qsMap(container, tag + '[' + attr + ']');
       elems.forEach(function adjust(el) {
-        var val = el.getAttribute(attr), url;
+        const val = el.getAttribute(attr);
         if (!val) { return; }
         if (fixRoot) {
-          url = EX.resolveUrl('./' + val);
+          const url = EX.resolveUrl('./' + val);
+          // eslint-disable-next-line no-param-reassign
           if (el[attr] === url) { el[attr] = cbd + val; }
         }
       });
@@ -126,23 +134,23 @@
   });
 
   (function maybeLoadWantedPage() {
-    var want, bad, base, title;
-    want = (location.search || '').slice(1);
-    title = String(want || contentLink.getAttribute('href') || ''
-      ).replace(/^[\.\/]*\//, '');
+    const want = (window.location.search || '').slice(1);
+    const title = String(want || contentLink.getAttribute('href') || '',
+    ).replace(/^[\.\/]*\//, '');
     if (title) { document.title = (title + ' — ' + document.title); }
     docHtmlElem.setAttribute('doctitle', title);
     if (!want) {
       docHtmlElem.setAttribute('docsrc', '');
       return;
     }
-    bad = EX.whyNotSafeRelativeLink.rooted(want);
+    const bad = EX.whyNotSafeRelativeLink.rooted(want);
     if (bad) { return EX.fatalError('Invalid content URL', { why: bad }); }
     contentLink.href = want;
     docHtmlElem.setAttribute('docsrc', want);
-    base = EX.urlBaseDir(contentLink.href);
+    let base = EX.urlBaseDir(contentLink.href);
     contentLink = null;
     if (base === EX.docBaseDir) { base = ''; }
     contentDestElem.baseDirUrl = base;
   }());
+
 }());
