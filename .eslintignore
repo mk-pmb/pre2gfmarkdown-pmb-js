@@ -1,3 +1,7 @@
 
-/build/*.debug.js
-/dist/*.min.js
+# Unfortunately, when run in a subdirectory, eslint won't read the
+# .eslintignore file in the repo top level, so instead we define
+# directory-independent patterns and symlink the .eslintignore file.
+
+*.debug.js
+*.min.js
