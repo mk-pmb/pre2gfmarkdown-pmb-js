@@ -32,6 +32,7 @@ hr {
 }
 
 .mdwiki-sidebar { padding: 0.75em; margin: 2em; }
+.mdwiki-sidebar.inline { display: inline-block; margin-left: 0; margin-top: 0; }
 .mdwiki-sidebar.topmost { margin-top: 0; border-top: 0; }
 .mdwiki-sidebar.left { float: left; margin-left: 0; border-left: 0; }
 .mdwiki-sidebar.right { float: right; margin-right: 0; border-right: 0; }
