@@ -31,6 +31,13 @@ hr {
   border-style: solid; opacity: 0.75;
 }
 
+
+table { border-collapse: collapse; --tbl-bdc: grey; }
+table, td, th { border: 1px solid var(--tbl-bdc); }
+td, th { text-align: left; padding: 0.2em 0.5em; }
+th { background-color: color-mix(in srgb, var(--tbl-bdc) 20%, transparent); }
+
+
 .mdwiki-sidebar { padding: 0.75em; margin: 2em; }
 .mdwiki-sidebar.inline { display: inline-block; margin-left: 0; margin-top: 0; }
 .mdwiki-sidebar.topmost { margin-top: 0; border-top: 0; }
