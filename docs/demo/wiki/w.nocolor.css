@@ -37,6 +37,24 @@ table, td, th { border: 1px solid var(--tbl-bdc); }
 td, th { text-align: left; padding: 0.2em 0.5em; }
 th { background-color: color-mix(in srgb, var(--tbl-bdc) 20%, transparent); }
 
+code, kbd {
+  --code-bdc: gainsboro;
+  --code-bgc: black;
+  border: 1px solid color-mix(in srgb, var(--code-bdc) 25%, transparent);
+  background-color: color-mix(in srgb, var(--code-bgc) 25%, transparent);
+  padding: 0.2em 0.4em;
+}
+code:empty, kbd:empty { display: none; }
+
+blockquote {
+  border: 0 solid color-mix(in srgb, white 50%, transparent);;
+  margin-left: 1em; border-left-width: 0.25em;
+  padding: 0; padding-left: 0.5em; /*
+    I'd love to also give small top and bottom paddings, but as soon as I do,
+    they will become a border for the tags inside the blockquote, i.e. the
+    margins of lists or paragraphs will apply _inside_ the blockquote box. */
+}
+
 
 .mdwiki-sidebar { padding: 0.75em; margin: 2em; }
 .mdwiki-sidebar.inline { display: inline-block; margin-left: 0; margin-top: 0; }

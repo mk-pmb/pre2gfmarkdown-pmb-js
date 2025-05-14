@@ -44,6 +44,13 @@ A random blockquote:
 (currently buggy)
 
 
+#### Inline styles
+
+You can <kbd>type</kbd> some <code>code ...:::|||></code> or `a command`.
+
+The <q>dynamic quotes</q> should change based on your locale settings.
+
+
 #### Unordered List
 
 * List item at top level
