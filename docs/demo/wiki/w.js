@@ -98,16 +98,16 @@
   }());
 
   function hookWikiLink(lnk) {
-    let href = lnk.getAttribute('href');
-    if (!/\.md(?:\.txt|)$/.test(href)) { return; }
-    href = lnk.href;
-    if (!EX.isRooted(href)) { return; }
-    href = href.slice(rootLen);
-    if (rootSub) { href = rootSub.rel(href); }
+    const hrefAttr = lnk.getAttribute('href');
+    if (!/\.md(?:\.txt|)$/.test(hrefAttr)) { return; }
+    let hrefFullUrl = lnk.href;
+    if (!EX.isRooted(hrefFullUrl)) { return; }
+    hrefFullUrl = hrefFullUrl.slice(rootLen);
+    if (rootSub) { hrefFullUrl = rootSub.rel(hrefFullUrl); }
     // eslint-disable-next-line no-param-reassign
-    if (!lnk.innerHTML) { lnk.innerText = href; }
+    if (!lnk.innerHTML) { lnk.innerText = hrefFullUrl; }
     // eslint-disable-next-line no-param-reassign
-    lnk.href = '?' + href;
+    lnk.href = '?' + hrefFullUrl;
     return true;
   }
 
