@@ -34,7 +34,7 @@ hr {
 
 table { border-collapse: collapse; --tbl-bdc: grey; }
 table, td, th { border: 1px solid var(--tbl-bdc); }
-td, th { text-align: left; padding: 0.2em 0.5em; }
+td, th { text-align: left; vertical-align: top; padding: 0.2em 0.5em; }
 th { background-color: color-mix(in srgb, var(--tbl-bdc) 20%, transparent); }
 
 code, kbd {
