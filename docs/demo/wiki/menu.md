@@ -6,7 +6,7 @@
 * [bar](bar.md)
 
 ### Demo
-* [](../hello.html)
+* [Hello](../hello.html)
 * [](../external.md)
 
 ### pre2gfm
