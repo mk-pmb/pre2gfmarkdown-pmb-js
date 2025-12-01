@@ -37,6 +37,7 @@ table, td, th { border: 1px solid var(--tbl-bdc); }
 td, th { text-align: left; vertical-align: top; padding: 0.2em 0.5em; }
 th { background-color: color-mix(in srgb, var(--tbl-bdc) 20%, transparent); }
 
+rss channel,
 code, kbd {
   --code-bdc: gainsboro;
   --code-bgc: black;
@@ -75,6 +76,11 @@ blockquote {
 .mdwiki-sidebar h3 { font-size: inherit; margin-top: 1em; }
 .mdwiki-sidebar h3:first-child { margin-top: 0; }
 
+rss channel > title, rss channel item, rss channel { display: block; }
+rss channel { width: auto; }
+rss channel > title { font-weight: bold; }
+rss channel item pubDate { display: inline-block; white-space: nowrap;
+  width: 40ex; text-align: right; margin-right: 1ex; }
 
 
 

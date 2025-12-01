@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Recent Changes</title>
+  <item><pubDate>Fri, 03 Jan 2025 21:07:38 +0100</pubDate><title>bar.md</title><link>https://example.test/?bar.md</link></item>
+  <item><pubDate>Fri, 03 Jan 2025 21:07:38 +0100</pubDate><title>foo.md</title><link>https://example.test/?foo.md</link></item>
+  <item><pubDate>Sat, 04 Jan 2025 08:18:22 +0100</pubDate><title>menu.md</title><link>https://example.test/?menu.md</link></item>
+  <item><pubDate>Thu, 15 May 2025 01:39:48 +0200</pubDate><title>home.md</title><link>https://example.test/?home.md</link></item>
+</channel></rss>
