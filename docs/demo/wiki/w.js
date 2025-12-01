@@ -1,23 +1,43 @@
 ﻿'use strict';
 /* global window, document */
 (function install() {
+  const EX = {
+    byid(id) { return (document.getElementById(id) || false); },
+    qs1(ctnr, sel) { return ctnr.querySelector(sel) || false; },
 
-  function byid(id) { return (document.getElementById(id) || false); }
+    qsMap(container, sel, func) {
+      let l = Array.from((container || document).querySelectorAll(sel));
+      if (func) { l = l.map(func); }
+      return l;
+    },
 
-  const EX = {};
+    mkTag(tn, pr) { return Object.assign(document.createElement(tn), pr); },
+
+    mapChTags(container, func, ctx) {
+      return Array.from(container.children).map(function oneChild(ch, idx) {
+        const tn = (ch.tagName || '').toLowerCase();
+        let tf = func[tn];
+        if (tf === false) { return; }
+        tf = EX.maybeFun(tf) || func;
+        return tf.call && tf(ch, idx, tn, ctx);
+      });
+    },
+
+    urlBaseDir(u) {
+      return String(u).split(/\?|\#/)[0].replace(/[\w\.\-]+$/, '');
+    },
+
+    maybeFun(x) { return (!!(x && x.call && x.apply)) && x; },
+
+  };
+
   let rootLen;
   let rootSub;
   const docHtmlElem = document.body.parentElement;
   // ^-- HTML often has no document.rootElement
-  let contentLink = byid('mdwiki-content-link');
+  let contentLink = EX.byid('mdwiki-content-link');
   if (!contentLink) { return; }
   const contentDestElem = (contentLink.parentNode || document.body);
-
-  EX.qsMap = function qsMap(container, sel, func) {
-    let l = Array.from((container || document).querySelectorAll(sel));
-    if (func) { l = l.map(func); }
-    return l;
-  };
 
   EX.fatalError = function fatalError(msg, ds) {
     let el = contentDestElem;
@@ -27,13 +47,10 @@
     el.dataset = ds;
   };
 
-  EX.urlBaseDir = function urlBaseDir(u) {
-    return String(u).split(/\?|\#/)[0].replace(/[\w\.\-]+$/, '');
-  };
   EX.docBaseDir = EX.urlBaseDir(document.URL);
   window.MDwiki = EX;
 
-  EX.rootUrl = byid('mdwiki-root-link').href;
+  EX.rootUrl = EX.byid('mdwiki-root-link').href;
   EX.isRooted = function isRooted(u) { return u.startsWith(EX.rootUrl); };
   if (EX.rootUrl) {
     if (!EX.rootUrl.endsWith('/')) { EX.rootUrl += '/'; }
