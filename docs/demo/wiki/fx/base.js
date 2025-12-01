@@ -2,7 +2,7 @@
 /* global window, document */
 (function install() {
   const { pre2gfm, MDwiki } = window;
-  const { qsMap } = MDwiki;
+  const { byid, mkTag, qsMap } = MDwiki;
   pre2gfm.syntaxHighlighters['mdwiki-fx'] = String;
 
   const EX = {
@@ -56,7 +56,22 @@
       }
     },
 
+    addCss(css) {
+      if (!css) { return; }
+      if (Array.isArray(css)) { return EX.addCss(css.join('\n')); }
+      EX.addCss.dest.innerHTML += '\n\n' + String(css) + '\n';
+    },
+
   };
 
+  EX.addCss.dest = (function setup() {
+    const id = 'mdwiki-fx-stylesheet';
+    const el = byid(id) || mkTag('style', { id, type: 'text/css' });
+    if (!el.parentNode) { document.head.appendChild(el); }
+    return el;
+  }());
+
+  if (!MDwiki.fx) { MDwiki.fx = {}; }
+  MDwiki.fx.base = EX;
   pre2gfm.onRendered.push(EX.scan);
 }());
