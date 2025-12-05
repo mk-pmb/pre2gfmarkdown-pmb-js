@@ -13,5 +13,6 @@ a:hover { color: skyblue; }
 
 .hljs,
 hr,
+iframe,
 .mdwiki-sidebar, .mdwiki-box { border-color: hsl(230, 20%, 40%); }
 .mdwiki-sidebar, .mdwiki-box { background-color: hsl(230, 20%, 15%); }

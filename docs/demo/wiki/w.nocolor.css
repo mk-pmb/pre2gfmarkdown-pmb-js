@@ -24,6 +24,7 @@ a.markdown-from-file.hourglass:before {
 }
 
 .hljs,
+iframe,
 .mdwiki-sidebar, .mdwiki-sidebar-bd { border-width: 2px; border-style: solid; }
 
 hr {
@@ -57,7 +58,7 @@ blockquote {
 }
 
 
-.mdwiki-sidebar { padding: 0.75em; margin: 2em; }
+.mdwiki-sidebar { padding: 0.75em; margin: 2em; vertical-align: top; }
 .mdwiki-sidebar.inline { display: inline-block; margin-left: 0; margin-top: 0; }
 .mdwiki-sidebar.topmost { margin-top: 0; border-top: 0; }
 .mdwiki-sidebar.left { float: left; margin-left: 0; border-left: 0; }
