@@ -1,4 +1,17 @@
 ﻿'use strict';
+/*
+!! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !!
+!!
+!!  This script applies only after MarkDown parsing!
+!!  If the RSS feed contains lines that do not start with a (potentially
+!!  indented) XML tag, the MarkDown parser will likely consider it as
+!!  end of the RSS feed prematurely.
+!!
+!!  Also keep in mind that when injecting RSS into HTML, there is
+!!  absolutely no CDATA handling at all!
+!!
+!! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !!
+*/
 /* global window */
 (function install() {
   const { MDwiki } = window;
