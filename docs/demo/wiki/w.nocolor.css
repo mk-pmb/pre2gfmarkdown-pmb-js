@@ -39,6 +39,7 @@ td, th { text-align: left; vertical-align: top; padding: 0.2em 0.5em; }
 th { background-color: color-mix(in srgb, var(--tbl-bdc) 20%, transparent); }
 
 rss channel,
+details,
 code, kbd {
   --code-bdc: gainsboro;
   --code-bgc: black;
@@ -47,6 +48,7 @@ code, kbd {
   padding: 0.2em 0.4em;
 }
 code:empty, kbd:empty { display: none; }
+details { padding: 0.5em; }
 
 blockquote {
   border: 0 solid color-mix(in srgb, white 50%, transparent);;
