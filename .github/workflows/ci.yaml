@@ -19,12 +19,12 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - '12.x'
-          - '16.x'
-          - '20.x'
+          - 16
+          - 20
+          - 24
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: mk-pmb/github-ci-util-2405-pmb/act/install@v1
         with:
           nodejs_version: ${{ matrix.node-version }}
