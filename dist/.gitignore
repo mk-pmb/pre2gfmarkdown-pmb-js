@@ -1,7 +1,9 @@
 
+### BEGIN ghpages-autodist-bundles ###
 # Auto-generated files meant to be published only on the gh-pages branch:
 /*.js.gz
 /*.min.js
+### ENDOF ghpages-autodist-bundles ###
 
 
 
