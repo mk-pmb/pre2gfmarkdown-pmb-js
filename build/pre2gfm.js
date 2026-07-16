@@ -3,13 +3,13 @@
 
 const mdRender = require('marked').parse;
 const getOwn = require('getown');
-const hljs = require('highlight.js');
+
+const { hljs } = window;
+const sani = false; // too aggressive: require('pagedown-sanitizer'),
 
 function dotText(x) { return x.text(); }
 function pre2gfm() { pre2gfm.scan(); }
 function urlNoHash(url) { return String(url).split(/#/)[0]; }
-
-const sani = false; // too aggressive: require('pagedown-sanitizer'),
 
 const bodyCacheBust = document.body.getAttribute(
   'markdown-from-file-cachebust');
@@ -76,8 +76,8 @@ mdOpt.highlight = function highlight(origCode, lang, next) {
     err = caught;
   }
   if (err) {
-    console.warn('pre2gfm: Failed to highlight code:',
-      { code, lang, error: err });
+    console.warn('pre2gfm: Failed to highlight code:', String(err),
+      { err, lang, code, origCode });
   }
   return (next ? next(null, code) : code);
 };
