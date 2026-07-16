@@ -58,8 +58,14 @@ pre2gfm.hljsProxy = function hljsProxy(code, lang) {
 };
 
 
+pre2gfm.plainTextProxy = function hljsProxy(text) {
+  return pre2gfm.hljsProxy(text, 'text');
+};
+
+
 pre2gfm.syntaxHighlighters = {
   '*': pre2gfm.hljsProxy,
+  '': pre2gfm.plainTextProxy,
 };
 
 
