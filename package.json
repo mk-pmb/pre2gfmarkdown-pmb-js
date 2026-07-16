@@ -23,6 +23,7 @@
   },
   "directories": { "test": "test" },
   "eslintConfig": { "extends": "nodejs-pmb" },
+  "npm_publish_from_branch": "gh-pages",
 
   "dependencies": {
   },
