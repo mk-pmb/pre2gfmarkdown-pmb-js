@@ -41,7 +41,7 @@ A random blockquote:
 
     A random blockquote
 
-(currently buggy)
+(^&mdash; currently buggy: renders as code block)
 
 
 #### Inline styles
