@@ -51,7 +51,9 @@ code, kbd {
   padding: 0.2em 0.4em;
 }
 code:empty, kbd:empty { display: none; }
-details { padding: 0.5em; }
+details { padding: 0.5em 1em; }
+details:not([open]) { display: inline-block; }
+details > summary { margin-left: -0.25em; }
 
 blockquote {
   border: 0 solid color-mix(in srgb, white 50%, transparent);;
