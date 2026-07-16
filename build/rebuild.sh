@@ -8,9 +8,9 @@ function rebuild () {
   exec </dev/null
   cd -- "$REPO_DIR" || return $?
 
-  eslint . || return $?
+  [[ ",$BUILD_FLAGS," == *,nolint,* ]] || eslint . || return $?
 
-  cd build || return $?
+  cd -- build || return $?
 
   local BFN='pre2gfm'
   local DBG="$BFN".debug.js
