@@ -9,6 +9,9 @@ body { padding-bottom: 50vh; }
 h1:first-child, h2:first-child, h3:first-child, h4:first-child { margin-top: 0; }
 h1, h2, h3, h4 { margin-bottom: 0.5em; }
 
+table,
+p { margin: 1em 0; }
+
 a { text-decoration: none; }
 
 a.markdown-from-file.hourglass:before {
