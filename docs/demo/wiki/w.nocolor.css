@@ -30,7 +30,7 @@ a.markdown-from-file.hourglass:before {
 iframe,
 .mdwiki-sidebar, .mdwiki-sidebar-bd { border-width: 2px; border-style: solid; }
 
-pre code.hljs { display: inline-block; padding: 1ex 1em; }
+pre > code { display: inline-block; padding: 1ex 1em; }
 
 
 hr {
