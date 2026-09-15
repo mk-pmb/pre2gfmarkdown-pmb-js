@@ -53,19 +53,32 @@ mdOpt.httpGet = (orf(window.axios).get // <-- see `../docs/httpGet.md`
 if (sani) { mdOpt.sanitizer = sani; }
 
 
-pre2gfm.hljsProxy = function hljsProxy(code, lang) {
-  return hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
-};
+(function compileHljsProxy() {
+  function hljsProxy(code, lang) {
+    /* Passing the code as arg 1 has the benefit of supporting
+      any generic one-argument string function, like String. */
+    const opt = { language: lang || 'text', ignoreIllegals: true };
+    return hljs.highlight(code, opt).value;
+  }
+  pre2gfm.hljsProxy = hljsProxy;
 
-
-pre2gfm.plainTextProxy = function hljsProxy(text) {
-  return pre2gfm.hljsProxy(text, 'text');
-};
+  const cache = new Map();
+  hljsProxy.forLang = function forLang(lang) {
+    const had = cache.get(lang);
+    if (had) { return had; }
+    const prx = function proxy(code) { return hljsProxy(code, lang); };
+    cache.set(lang, prx);
+    return prx;
+  };
+}());
 
 
 pre2gfm.syntaxHighlighters = {
   '*': pre2gfm.hljsProxy,
-  '': pre2gfm.plainTextProxy,
+  '': pre2gfm.hljsProxy.forLang('text'),
+
+  powershell: pre2gfm.hljsProxy.forLang('csharp'),
+  pwsh: pre2gfm.hljsProxy.forLang('csharp'),
 };
 
 
@@ -75,15 +88,25 @@ mdOpt.highlight = function highlight(origCode, lang, next) {
   let err;
   let code = '';
   try {
-    code = impl(origCode, lang); /*
-      Passing the code as arg 1 has the benefit of supporting any generic
-      one-argument string function, like String. */
+    code = impl(origCode, lang);
   } catch (caught) {
     err = caught;
   }
   if (err) {
-    console.warn('pre2gfm: Failed to highlight code:', String(err),
-      { err, lang, code, origCode });
+    const msg = String(err.message || '');
+    const unkLang = (msg.split('Unknown language: ')[1]
+      || '').replace(/"/g, '').trim();
+    const report = { err, lang, unkLang, code, origCode };
+    if (unkLang) { delete report.origCode; }
+    console.warn('pre2gfm: Failed to highlight code:', String(err), report);
+    if (unkLang) {
+      try {
+        code = impl(origCode, 'text');
+      } catch (caught) {
+        console.warn('pre2gfm: Failed to fallback-render code as plain text:',
+          String(caught));
+      }
+    }
   }
   return (next ? next(null, code) : code);
 };
