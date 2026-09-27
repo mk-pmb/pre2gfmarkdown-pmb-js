@@ -98,11 +98,13 @@
   }());
 
   (function ns() {
+    const acceptableCharsRgx = /[\w\!\$\&\(\)\*\+,\-\.\/:;=@~]/g;
     const wn = function whyNotSafeRelativeLink(href) {
       if (!href) { return 'empty'; }
       if (href.startsWith('/')) { return 'absolute'; }
-      if (href !== encodeURI(href)) { return 'scary:char'; }
       if (/[\/:]\//.test(href)) { return 'scary:slash'; }
+      const bad = href.replace(acceptableCharsRgx, '');
+      if (bad) { return 'scary:char:' + bad; }
     };
     wn.rooted = function andRooted(href) {
       const bad = wn(href);
@@ -151,7 +153,7 @@
   });
 
   (function maybeLoadWantedPage() {
-    const want = (window.location.search || '').slice(1);
+    const want = decodeURIComponent(window.location.search || '').slice(1);
     const title = String(want || contentLink.getAttribute('href') || '',
     ).replace(/^[\.\/]*\//, '');
     if (title) { document.title = (title + ' — ' + document.title); }
