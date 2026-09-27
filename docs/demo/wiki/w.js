@@ -44,7 +44,7 @@
     el.innerHTML = '<p class="mdwiki-error"></p>';
     el = el.firstChild;
     el.innerText = 'Error: ' + msg;
-    el.dataset = ds;
+    Object.assign(el.dataset, ds);
   };
 
   EX.docBaseDir = EX.urlBaseDir(document.URL);
