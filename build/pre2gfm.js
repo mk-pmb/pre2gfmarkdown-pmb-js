@@ -11,6 +11,13 @@ function dotText(x) { return x.text(); }
 function pre2gfm() { pre2gfm.scan(); }
 function urlNoHash(url) { return String(url).split(/#/)[0]; }
 
+
+function renderMarkdownInto(code) {
+  this.getMdSourceText = String.bind(null, code);
+  this.innerHTML = mdRender(code);
+}
+
+
 const bodyCacheBust = document.body.getAttribute(
   'markdown-from-file-cachebust');
 const docUrlNoHash = urlNoHash(window.document.URL);
@@ -142,7 +149,8 @@ function transformOneTagText(orig) {
   const mdTag = document.createElement('div');
   mdTag.className = orig.className;
   mdTag.classList.add('markdown');
-  mdTag.innerHTML = mdRender(orig.innerHTML);
+  mdTag.renderMarkdownInto = renderMarkdownInto;
+  mdTag.renderMarkdownInto(orig.innerHTML);
   if (par) {
     // console.debug('insert mdTag', mdTag, 'before', orig);
     par.insertBefore(mdTag, orig);
@@ -183,7 +191,7 @@ function fetchOneTagText(link) {
     let code = orig.replace(/\r|\uFEFF/g, '');
     if (code.slice(-1) !== '\n') { code += '\n'; }
     if (hll) { code = '```' + hll + '\n' + code + '```\n'; }
-    mdTag.innerHTML = mdRender(code);
+    mdTag.renderMarkdownInto(code);
     mdTag.classList.remove('hourglass');
     triggerOnRendered(mdTag);
   }
