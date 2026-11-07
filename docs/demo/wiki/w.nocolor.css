@@ -9,6 +9,8 @@ body { padding-bottom: 50vh; }
 h1:first-child, h2:first-child, h3:first-child, h4:first-child { margin-top: 0; }
 h1, h2, h3, h4 { margin-bottom: 0.5em; }
 
+blockquote,
+pre,
 table,
 p { margin: 1em 0; }
 
@@ -30,6 +32,8 @@ a.markdown-from-file.hourglass:before {
 iframe,
 .mdwiki-sidebar, .mdwiki-sidebar-bd { border-width: 2px; border-style: solid; }
 
+/* Code blocks with empty language name or language "text" do not have
+  a class attribute and thus no .hljs. */
 pre > code { display: inline-block; padding: 1ex 1em; }
 
 
@@ -54,9 +58,16 @@ code, kbd {
   padding: 0.2em 0.4em;
 }
 code:empty, kbd:empty { display: none; }
+
 details { padding: 0.5em 1em; }
 details:not([open]) { display: inline-block; }
-details > summary { margin-left: -0.25em; }
+details[open] > summary,
+details { margin-bottom: 0.5em; }
+details > summary { margin-left: -0.25em; cursor: pointer; }
+details + p,
+details > p:first-child,
+details > summary:first-child + p { margin-top: 0; }
+details > p:last-child { margin-bottom: 0.2em; }
 
 blockquote {
   border: 0 solid color-mix(in srgb, white 50%, transparent);;
